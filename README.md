@@ -9,5 +9,5 @@ TODO:
   3. <del>Create function to add files and check their size</del>
   4. <del>Realise drag and drop</del>
   5. Create function for deleting files
-  6. Create section with sended mails
+  6. <del>Create section with sended mails</del>
   6. Plug Sendsay API 
