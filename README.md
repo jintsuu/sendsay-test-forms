@@ -8,6 +8,7 @@ TODO:
   2. <del>Make validation for input of the form</del>
   3. <del>Create function to add files and check their size</del>
   4. <del>Realise drag and drop</del>
-  5. Create function for deleting files
-  6. <del>Create section with sended mails</del>
-  6. Plug Sendsay API 
+  5. <del>Create function for deleting files<del>
+  6. <del>Create functionality to encode files into base-64</del>
+  7. <del>Create section with sended mails</del>
+  8. Plug Sendsay API 
