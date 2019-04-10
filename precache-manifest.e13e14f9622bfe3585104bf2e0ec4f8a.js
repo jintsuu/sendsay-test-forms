@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/sendsay-test-forms/static/js/runtime~main.2bc01a5e.js"
   },
   {
-    "revision": "692507619284725aca53",
-    "url": "/sendsay-test-forms/static/js/main.52500e06.chunk.js"
+    "revision": "b23b4178b64c4b9c6373",
+    "url": "/sendsay-test-forms/static/js/main.352e45e6.chunk.js"
   },
   {
     "revision": "45124f853ba07aa965c0",
     "url": "/sendsay-test-forms/static/js/2.6efc73d3.chunk.js"
   },
   {
-    "revision": "692507619284725aca53",
+    "revision": "b23b4178b64c4b9c6373",
     "url": "/sendsay-test-forms/static/css/main.d385864b.chunk.css"
   },
   {
-    "revision": "85c0d742e76eab4a0aced559b92d62e3",
+    "revision": "4a5c33090e571a366bb84ca5e0c6a342",
     "url": "/sendsay-test-forms/index.html"
   }
 ];

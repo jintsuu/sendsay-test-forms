@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/sendsay-test-forms/precache-manifest.604e75439041bffd95c4dfe4917e57a7.js"
+  "/sendsay-test-forms/precache-manifest.e13e14f9622bfe3585104bf2e0ec4f8a.js"
 );
 
 workbox.clientsClaim();
