@@ -17,6 +17,8 @@ class App extends Component {
       dragging: false,
       messages: [],
       isMessagesSended: false,
+      session: '',
+      isAuth: false,
     };
   }
   
@@ -101,17 +103,17 @@ class App extends Component {
 
   addFile = (file) => {
     let counter = this.state.buttonCounter;
+    let content;
     const sizes = this.state.sizes;
     const newFileSize = file.size/1024/1024;
     const newSizeSum  = newFileSize + this.state.sizeSum;
     const button = document.getElementById(`label-${counter}`);
     const fileInput = document.getElementById(`file-${counter}`);
-
     const reader = new FileReader();
 
     if(newFileSize < 5 && newSizeSum < 20) {
       fileInput.setAttribute("disabled", "");
-      let content;
+      
       reader.onload = (e) => {
         content = e.target.result;
         this.state.files.push({
@@ -123,7 +125,7 @@ class App extends Component {
           number: counter,
         });
       }
-      console.log(this.state.files);
+      
       reader.readAsDataURL(file);
       button.innerHTML = file.name;
       counter++;
@@ -154,11 +156,12 @@ class App extends Component {
     let files = this.state.files;
     let sizes = this.state.sizes;
     let newSum;
+
     files = files.filter(el => el.number !== index+1);
     buttons = buttons.filter(el => el.number !== index);
     sizes = sizes.filter(el => el.number !== index+1);
     newSum = sizes.reduce((sum, { size }) => sum + size, 0);
-    console.log(files);
+
     this.setState({
       files: files,
       sizeSum: newSum,
@@ -168,44 +171,65 @@ class App extends Component {
   }
   
 
-  // --------------------------------------- SENDING REQUEST TO API -------------------------------------
+  // --------------------------------------- Authorisation -------------------------------------
+
+  auth = (e) => {
+    e.preventDefault();
+
+    const params = {
+      "action" : "login", 
+      
+      "login"  : "nipanasovich@gmail.com", 
+      
+      "passwd" : "uu1Quem", 
+    };
+    const request = "apiversion=100&json=1&request=" + encodeURIComponent(JSON.stringify(params));
+    let session = this.state.session;
+
+    fetch("https://api.sendsay.ru/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: request,
+    })
+    .then(res => res.json())
+    .then(res => { 
+        session = res.session
+        this.setState({
+          session: session,
+        });
+        this.sendMail()
+      }
+    )
+    .catch(err => console.log(err));
+
+  }
+
+  // ---------------------------------------------- SEND MAIL ----------------------------------------------------------------
 
   sendMail = (e) => {
-    e.preventDefault();
+    if(this.state.isAuth) { e.preventDefault() }
     let fromName = document.getElementById("fromName");
     let fromMail = document.getElementById("fromMail");
     let toName = document.getElementById("toName");
     let toMail = document.getElementById("toMail");
     let subject = document.getElementById("subject");
     let text = document.getElementById("text");
-
+    let files = [];
+    let trackId;
+    const filesArr = this.state.files;
     const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
+      "July", "August", "September", "October", "November", "December"];
     const date = new Date();
     const mailDate = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-
-  
-    const newMessage = {
-      subject: subject.value,
-      fromName: fromName.value,
-      fromMail: fromMail.value,
-      toName: toName.value,
-      toMail: toMail.value,
-      text: text.value,
-      date: mailDate,
-      status: "sended",
-    }
-
     const messages = this.state.messages;
 
-    messages.push(newMessage);
-
-    this.setState({
-      messages: messages,
-      isMessagesSended: true,
+    filesArr.forEach((item) => {
+      files.push(item.file);
     })
-    var params = { 
+    
+    const params = { 
       "action" : "issue.send.test",
       "letter" : {
         "subject" : subject.value,
@@ -213,64 +237,79 @@ class App extends Component {
         "from.email" : fromMail.value,
         "to.name" : toName.value,
         "message": {"text" : text.value },
-        "attaches": this.state.files
+        "attaches": files
       },
       "sendwhen": "test",
       "mca": [
         toMail.value,
       ],
-      "session": "Брать из cookies по ключу session",
+      "session": this.state.session,
+
     };
+    const request = "apiversion=100&json=1&request=" + encodeURIComponent(JSON.stringify(params));
 
-    var request = "request=" + encodeURIComponent(JSON.stringify(params));
-
-    fetch("https://api.sendsay.ru/?apiversion=100&json=1&", {
+    fetch("https://api.sendsay.ru/", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: request,
     })
     .then(res => res.json())
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
+    .then(res => {
+        trackId = res["track.id"];
+        const newMessage = {
+          subject: subject.value,
+          fromName: fromName.value,
+          fromMail: fromMail.value,
+          toName: toName.value,
+          toMail: toMail.value,
+          text: text.value,
+          date: mailDate,
+          id: trackId,
+        }
 
-    // Cleaning the form
+        messages.push(newMessage);
 
-    fromName.value = "";
-    fromMail.value = "";
-    toName.value = "";
-    toMail.value = "";
-    subject.value = "";
-    text.value = "";
+        // Cleaning the form
 
-    this.setState({
-      sizeSum: 0,
-      buttonCounter: 1,
-      files: [],
-      sizes: [],
-      buttons: [],
-    }, () => this.addButtonsIntoArr());
+        fromName.value = "";
+        fromMail.value = "";
+        toName.value = "";
+        toMail.value = "";
+        subject.value = "";
+        text.value = "";
 
-    
+        this.setState({
+          messages: messages,
+          isMessagesSended: true,
+          isAuth: true,
+          sizeSum: 0,
+          buttonCounter: 1,
+          files: [],
+          sizes: [],
+          buttons: [],
+        }, () => this.addButtonsIntoArr());
+      })
+      .catch(err => console.log(err));  
   }
   
 
-  // ---------------------------------------- REDNER ----------------------------------
+  // ---------------------------------------- RENDER ----------------------------------
 
   render() {
-    const { buttonCounter, dragging, sizeSum, isMessagesSended, messages, buttons } = this.state;
+    const { isAuth, buttonCounter, dragging, sizeSum, isMessagesSended, messages, buttons, session } = this.state;
 
     return (
       <div className="App">
-        <form onSubmit={ this.sendMail } className="form" ref={ this.dropRef }>
+        <form onSubmit={ isAuth ? this.sendMail : this.auth } className="form" ref={ this.dropRef }>
           <div className={ dragging ? "drop-zone" : "disabled"}>
             <div className="drop-zone--inner"><p className="drop-zone__text">Drop me Here!</p></div>
           </div>
           <h1 className="form__heading">BestMail</h1>
           <div className="form__inputs">
             <div className="input-wrapper">
-              <input className="input" type="text" id="fromName" name="from-name" minLength="2" maxLength="20" placeholder="Your Name" required />
+              <input className="input" type="text" id="fromName" name="from-name" minLength="2" maxLength="30" placeholder="Your Name" required />
               <label htmlFor="from-name" className="label">Your Name</label>
             </div>
             <div className="input-wrapper">
@@ -278,7 +317,7 @@ class App extends Component {
               <label htmlFor="from-name" className="label">Your Email</label>
             </div>
             <div className="input-wrapper">
-              <input className="input" type="text" id="toName" name="to-name" minLength="2" maxLength="20" placeholder="Receiver Name" required />
+              <input className="input" type="text" id="toName" name="to-name" minLength="2" maxLength="30" placeholder="Receiver Name" required />
               <label htmlFor="from-name" className="label">Receiver Name</label>
             </div>
             <div className="input-wrapper">
@@ -315,7 +354,7 @@ class App extends Component {
           <input type="submit" className="submit-btn" value = "Send!"/>
         </form>
 
-        <MessagesBox isMessagesSended={ isMessagesSended } messages={ messages } />
+        <MessagesBox isMessagesSended={ isMessagesSended } messages={ messages } session={ session }/>
       </div>
     );
   }

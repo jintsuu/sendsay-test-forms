@@ -11,4 +11,4 @@ TODO:
   5. <del>Create function for deleting files<del>
   6. <del>Create functionality to encode files into base-64</del>
   7. <del>Create section with sended mails</del>
-  8. Plug Sendsay API 
+  8. <del>Plug Sendsay API</del>

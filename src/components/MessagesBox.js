@@ -1,6 +1,8 @@
 import React from 'react';
 
-const MessagesBox = ({ isMessagesSended, messages }) => {
+import Message from './Message';
+
+const MessagesBox = ({ isMessagesSended, messages, session }) => {
 
     return(
         <div className={ isMessagesSended ? "messages-box" : "disabled" }>
@@ -19,21 +21,7 @@ const MessagesBox = ({ isMessagesSended, messages }) => {
             <hr />
             <div className="messages">
               {
-                messages.reverse().map( (item, index) => {
-                  return(
-                    <div className="messages__item" key={index}>
-                      <p className="item__date">
-                        { item.date }
-                      </p>
-                      <p className="item__subject">
-                        { item.subject }
-                      </p> 
-                      <p className="item__status">
-                        { item.status }
-                      </p>
-                    </div>
-                  );
-                })
+                messages.reverse().map( (item, index) => <Message trackId={ item.id } session={ session } date={ item.date } subject={ item.subject } key={ index }/>)
               }
             </div>
           </div>

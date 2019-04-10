@@ -222,9 +222,10 @@ body {
 .messages-box {
   background-color: rgb(241, 234, 234);
   width: 50vw;
-  height: 50vw;
+  height: 95vh;
   margin: 0 auto;
   margin-top: 3rem;
+  margin-bottom: 3rem;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0px 0px 43px 10px rgba(0, 0, 0, 0.829);
@@ -256,30 +257,50 @@ body {
   justify-content: space-between;
   align-items: center;
   font-size: 2rem;
-  background-color: white;
   padding: 1rem;
-  border-radius: 10px;
   margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.445);
 }
 
 .item__date {
   flex-basis: 20%;
-  border-right: 1px solid black;
-  font-size: 1.5rem
+  font-size: 1.5rem;
+  height: 100%;
 }
 
 .item__subject {
   display: block;
   padding: 0 1rem;
-  flex-basis: 70%;
+  flex-basis: 60%;
   overflow: hidden;
   text-align: center;
-  border-right: 1px solid black;
   text-overflow: ellipsis; 
 }
 
 .item__status {
-  flex-basis: 10%;
+  flex-basis: 20%;
   text-align: right;
+  height: 100%;
 }
 
+.Sended {
+  color: rgb(34, 165, 34);
+}
+
+.Error {
+  color: rgb(190, 7, 7);
+}
+
+@media (max-width: 770px) {
+  .form, .messages-box {
+    width: 95vw;
+  }
+
+  .input-wrapper {
+    flex-basis: 100%;
+  }
+
+  .textarea {
+    width: 100%;
+  }
+}
