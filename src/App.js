@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import FileButton from './components/FileButton';
 import MessagesBox from './components/MessagesBox';
 
+import loading from "./img/loading.svg";
+
 import './style.css';
 
 class App extends Component {
@@ -17,6 +19,7 @@ class App extends Component {
       dragging: false,
       messages: [],
       isMessagesSended: false,
+      isMessageSending: false,
       session: '',
       isAuth: false,
     };
@@ -175,6 +178,9 @@ class App extends Component {
 
   auth = (e) => {
     e.preventDefault();
+    this.setState({
+      isMessageSending: true,
+    });
 
     const params = {
       "action" : "login", 
@@ -209,7 +215,13 @@ class App extends Component {
   // ---------------------------------------------- SEND MAIL ----------------------------------------------------------------
 
   sendMail = (e) => {
-    if(this.state.isAuth) { e.preventDefault() }
+    if(this.state.isAuth) { 
+      e.preventDefault();
+      this.setState({
+        isMessageSending: true,
+      });
+    }
+    
     let fromName = document.getElementById("fromName");
     let fromMail = document.getElementById("fromMail");
     let toName = document.getElementById("toName");
@@ -292,19 +304,26 @@ class App extends Component {
         }, () => this.addButtonsIntoArr());
       })
       .catch(err => console.log(err));  
+
+      this.setState({
+        isMessageSending: false,
+      })
   }
   
 
   // ---------------------------------------- RENDER ----------------------------------
 
   render() {
-    const { isAuth, buttonCounter, dragging, sizeSum, isMessagesSended, messages, buttons, session } = this.state;
+    const { isAuth, buttonCounter, dragging, sizeSum, isMessagesSended, messages, buttons, session, isMessageSending } = this.state;
 
     return (
       <div className="App">
         <form onSubmit={ isAuth ? this.sendMail : this.auth } className="form" ref={ this.dropRef }>
           <div className={ dragging ? "drop-zone" : "disabled"}>
             <div className="drop-zone--inner"><p className="drop-zone__text">Drop me Here!</p></div>
+          </div>
+          <div className={ isMessageSending ? "loading" : "disabled"}>
+            <img src={ loading } alt="Loading..." className="loading-img" />
           </div>
           <h1 className="form__heading">BestMail</h1>
           <div className="form__inputs">
