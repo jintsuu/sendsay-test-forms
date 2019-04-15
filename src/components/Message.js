@@ -4,8 +4,11 @@ class Messages extends Component {
     constructor(props) {
       super(props); 
       this.state = {
-        status: 'Sending',
+        status: 'В очереди',
+        statusClass: 'sending',
         isStatusSetted: false,
+        date: this.props.date,
+        subject: this.props.subject,
       }
     }
 
@@ -18,14 +21,13 @@ class Messages extends Component {
     }
 
     getStatus = (id) => {
-      let status = "Sending";
+      let status = "В очереди";
+      let statusClass = "sending";
       let isStatusSetted = false;
       let response;
       const params = {
         "action": "track.get",
-  
         "id": id,
-  
         "session": this.props.session,
       };
   
@@ -44,10 +46,12 @@ class Messages extends Component {
         response = res["obj"]["status"];
         response = Number(response);
         if(response === -1) {
-          status = "Sended";
+          status = "Отправлено";
+          statusClass = 'sended';
           isStatusSetted = true;
         } else if(response < -1) {
-          status = "Error";
+          status = "Ошибка";
+          statusClass = "error";
           isStatusSetted = true;
         }
 
@@ -57,15 +61,17 @@ class Messages extends Component {
 
         this.setState({
           status: status,
+          statusClass: statusClass,
           isStatusSetted: isStatusSetted,
         })
       })
       .catch(err => console.log(err));
     }
 
+    // --------------------------------- RENDER ------------------------------------------------------------
+
     render() {
-      const { date, subject } = this.props;
-      const { status } = this.state;
+      const { status, statusClass, date, subject } = this.state;
       return(
         <div className="messages__item">
             <p className="item__date">
@@ -74,7 +80,7 @@ class Messages extends Component {
             <p className="item__subject">
                 { subject }
             </p> 
-            <p className={`item__status ${status}`}>
+            <p className={`item__status ${statusClass}`}>
                 { status }
             </p>
         </div>

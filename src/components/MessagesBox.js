@@ -5,23 +5,24 @@ import Message from './Message';
 const MessagesBox = ({ isMessagesSended, messages, session }) => {
 
     return(
-        <div className={ isMessagesSended ? "messages-box" : "disabled" }>
+        <div className="messages-box" >
+          <h2 className="messages-box__heading">Отправленные сообщения</h2>
           <div className="messages-box__wrapper">
-            <ul className="messages-box__titles">
+            <ul className={ isMessagesSended ? "messages-box__titles" : "disabled" } >
               <li className="titles__item">
-                Date
+                Дата
               </li>
               <li className="titles__item">
-                Subject
+                Тема
               </li>
               <li className="titles__item">
-                Status
+                Статус
               </li>
             </ul>
-            <hr />
+            <p className={isMessagesSended ? "disabled" : "messages-box__text" } > Сообщения ещё не отправлялись </p>
             <div className="messages">
               {
-                messages.reverse().map( (item, index) => <Message trackId={ item.id } session={ session } date={ item.date } subject={ item.subject } key={ index }/>)
+                messages.map( (item, index) => <Message trackId={ item.id } session={ session } date={ item.date } subject={ item.subject } key={ index }/>)
               }
             </div>
           </div>
