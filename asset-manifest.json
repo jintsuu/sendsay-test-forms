@@ -1,15 +1,14 @@
 {
-  "main.css": "/sendsay-test-forms/static/css/main.7a722440.chunk.css",
-  "main.js": "/sendsay-test-forms/static/js/main.62918625.chunk.js",
-  "main.js.map": "/sendsay-test-forms/static/js/main.62918625.chunk.js.map",
+  "main.css": "/sendsay-test-forms/static/css/main.1fcb1016.chunk.css",
+  "main.js": "/sendsay-test-forms/static/js/main.f291688a.chunk.js",
+  "main.js.map": "/sendsay-test-forms/static/js/main.f291688a.chunk.js.map",
   "runtime~main.js": "/sendsay-test-forms/static/js/runtime~main.2bc01a5e.js",
   "runtime~main.js.map": "/sendsay-test-forms/static/js/runtime~main.2bc01a5e.js.map",
-  "static/js/2.179f4c70.chunk.js": "/sendsay-test-forms/static/js/2.179f4c70.chunk.js",
-  "static/js/2.179f4c70.chunk.js.map": "/sendsay-test-forms/static/js/2.179f4c70.chunk.js.map",
+  "static/js/2.98dcc9dd.chunk.js": "/sendsay-test-forms/static/js/2.98dcc9dd.chunk.js",
+  "static/js/2.98dcc9dd.chunk.js.map": "/sendsay-test-forms/static/js/2.98dcc9dd.chunk.js.map",
   "index.html": "/sendsay-test-forms/index.html",
-  "precache-manifest.4c0d5e450ceeb9607b33af831ad6e9f7.js": "/sendsay-test-forms/precache-manifest.4c0d5e450ceeb9607b33af831ad6e9f7.js",
+  "precache-manifest.f05feb52c4a19500db1af5bcc3133a33.js": "/sendsay-test-forms/precache-manifest.f05feb52c4a19500db1af5bcc3133a33.js",
   "service-worker.js": "/sendsay-test-forms/service-worker.js",
-  "static/css/main.7a722440.chunk.css.map": "/sendsay-test-forms/static/css/main.7a722440.chunk.css.map",
-  "static/media/del.svg": "/sendsay-test-forms/static/media/del.fd8b42e2.svg",
-  "static/media/loading.svg": "/sendsay-test-forms/static/media/loading.9068484e.svg"
+  "static/css/main.1fcb1016.chunk.css.map": "/sendsay-test-forms/static/css/main.1fcb1016.chunk.css.map",
+  "static/media/clip.svg": "/sendsay-test-forms/static/media/clip.0a300352.svg"
 }
