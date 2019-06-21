@@ -179,11 +179,6 @@ class App extends Component {
  auth = (e) => {
   e.preventDefault();
 
-  const params = {
-    "action" : "login", 
-    "login"  : "nipanasovich@gmail.com", 
-    "passwd" : "uu1Quem", 
-  };
   const request = "apiversion=100&json=1&request=" + encodeURIComponent(JSON.stringify(params));
 
   fetch("https://api.sendsay.ru/", {
